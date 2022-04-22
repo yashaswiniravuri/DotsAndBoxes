@@ -61,7 +61,6 @@ class PlayGame():
                         self.player1_points+=1
                     else:
                         self.player2_points+=1
-                        self.player1=True
                 else:
                     self.player1=not self.player1#switch player
         print("horizontal line matrix:\n",self.hor_line_matrix)
