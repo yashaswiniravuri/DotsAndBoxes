@@ -3,8 +3,7 @@ import pandas as pd
 class PlayGame():
     def __init__(self):
         self.line_type=0#0 for hor_line_matrix and 1 for columns
-        self.is_right_move
-        =True#wrong clicks
+        self.is_right_move=True#wrong clicks
         self.no_of_dots=2#size of one side to the dot matrix
         #get number of dots
         #Number of dots should be less than 3 
