@@ -3,7 +3,8 @@ import pandas as pd
 class PlayGame():
     def __init__(self):
         self.line_type=0#0 for hor_line_matrix and 1 for columns
-        self.mybool=True#wrong clicks
+        self.is_right_move
+        =True#wrong clicks
         self.no_of_dots=2#size of one side to the dot matrix
         #get number of dots
         #Number of dots should be less than 3 
@@ -16,6 +17,7 @@ class PlayGame():
         self.ver_line_matrix=pd.DataFrame(self.ver_line_matrix)
 
         self.player1=True #player1 is playing the game
+        #if set to False, player2 is playing
         self.player1_points=0 #points scored by player1, initialized to 0
         self.player2_points=0 #points scored by player2, initialized to 0
 
@@ -26,10 +28,12 @@ class PlayGame():
     def start(self):
         while(self.hor_line_matrix.eq(0).any().any() and self.ver_line_matrix.eq(0).any().any()):#Loop until all the elements are filled
             #take input of the coordinates of the line a player draws
-            row0=int(input("enter row0: "))
-            col0=int(input("enter col0: "))
-            row1=int(input("enter row1: "))
-            col1=int(input("enter col1: "))
+            print("enter starting point coordinates (x1,y1): ")
+            row0=int(input("enter x1: "))
+            col0=int(input("enter y1: "))
+            print("enter ending point coordinates (x2,y2): ")
+            row1=int(input("enter x2: "))
+            col1=int(input("enter y2: "))
             if (row0==row1 and abs(col0-col1)==1):
                 self.line_type=0#line type-horizontal
                 self.hor_line_matrix.iloc[row0,col0]=1
@@ -37,7 +41,7 @@ class PlayGame():
                 self.line_type=1#line type-vertical
                 self.ver_line_matrix.iloc[row0,col0]=1
             else:
-                self.mybool=False#wrong input
+                self.is_right_move=False#wrong input
                 print("Please enter valid input")
             self.Count_points(row0,col0)
         self.display_winner()
@@ -51,15 +55,15 @@ class PlayGame():
             print("IT'S A TIE!")
  
     def Count_points(self,r0,c0):
-        if self.mybool:
+        if self.is_right_move:
                 if self.is_box(r0,c0):
                     if self.player1==True:
                         self.player1_points+=1
-                        self.player1=False
                     else:
                         self.player2_points+=1
                         self.player1=True
-                self.player1=not self.player1#switch player
+                else:
+                    self.player1=not self.player1#switch player
         print("horizontal line matrix:\n",self.hor_line_matrix)
         print("vertical line matrix: \n",self.ver_line_matrix)
 
