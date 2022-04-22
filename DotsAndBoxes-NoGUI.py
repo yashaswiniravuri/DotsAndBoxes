@@ -14,19 +14,19 @@ class PlayGame():
         #create a vertical line matrix of size [no_of_dots-1 x no_of_dots]
         self.ver_line_matrix=[[0 for y in range(self.no_of_dots)] for x in range (self.no_of_dots-1)]
         self.ver_line_matrix=pd.DataFrame(self.ver_line_matrix)
-
-        self.player1=True #player1 is playing the game
-        #if set to False, player2 is playing
-        self.player1_points=0 #points scored by player1, initialized to 0
-        self.player2_points=0 #points scored by player2, initialized to 0
+        self.no_of_players=int(input("Enter number of players: "))
+        self.player=0 #current player id = 0
+        self.points=[0 for x in range(self.no_of_players)]
 
     def get_noOfDots(self):
         while(self.no_of_dots<3):
             self.no_of_dots=int(input("Enter the matrix size: "))
     
     def start(self):
+        
         while(self.hor_line_matrix.eq(0).any().any() and self.ver_line_matrix.eq(0).any().any()):#Loop until all the elements are filled
             #take input of the coordinates of the line a player draws
+            print("Player ",self.player+1," is playing")
             print("enter starting point coordinates (x1,y1): ")
             row0=int(input("enter x1: "))
             col0=int(input("enter y1: "))
@@ -46,22 +46,16 @@ class PlayGame():
         self.display_winner()
 
     def display_winner(self):
-        if(self.player1_points>self.player2_points):
-            print("WINNER: PLAYER1")
-        elif(self.player1_points<self.player2_points):
-            print("WINNER: PLAYER2")
-        else:
-            print("IT'S A TIE!")
+        max_value = max(self.points)
+        max_index = self.points.index(max_value)
+        print("WINNER: PLAYER",max_index+1)
  
     def Count_points(self,r0,c0):
         if self.is_right_move:
                 if self.is_box(r0,c0):
-                    if self.player1==True:
-                        self.player1_points+=1
-                    else:
-                        self.player2_points+=1
+                    self.points[self.player]+=1
                 else:
-                    self.player1=not self.player1#switch player
+                    self.player=((self.player+1)%self.no_of_players) #next player
         print("horizontal line matrix:\n",self.hor_line_matrix)
         print("vertical line matrix: \n",self.ver_line_matrix)
 
