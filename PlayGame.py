@@ -17,8 +17,9 @@ class PlayGame():
         self.chains=np.zeros([self.no_of_dots-1,self.no_of_dots-1])
         self.game_type=0
         while(self.game_type!=1 and self.game_type!=2 and self.game_type!=3):
-            self.game_type=int(input("Press 1 for human game. Press 2 for computer game-human game. Press 3 for computers to compete with each other: "))
-        self.no_of_players=int(input("Enter number of players: "))
+            self.game_type=int(input("Press 1 for human vs human game. Press 2 for human vs computer game. Press 3 for computer vs computer game: "))
+        self.no_of_players=int(input("Enter number of players:"))
+        print("\n\n")
 
         self.player=0 #current player id = 0
         self.points=[0 for x in range(self.no_of_players)]
@@ -63,20 +64,26 @@ class PlayGame():
                                 print(" ",end=" ")
                         else: print(" ",end=" ")
                 print()
-                    
-                    
+
             if self.game_type==1:
-                print("Player",self.player+1,"is playing")
+                for i in range(self.no_of_players):
+                    print("Player ",i+1," points: ",self.points[i])
+                print("\nPLAYER",i+1,"IS PLAYING\n")
                 human_game(self)
             elif self.game_type==2:
+                for i in range(self.no_of_players):
+                    if i==self.no_of_players-1:print("Computer points: ",self.points[i])
+                    else:print("Player ",i+1," points: ",self.points[i])
                 if self.player==self.no_of_players-1:
-                    print("Computer is playing")
+                    print("\nCOMPUTER IS PLAYING\n")
                     computer_game(self)
                 else:
-                    print("Player ",self.player+1," is playing")
+                    print("\nPLAYER ",self.player+1," IS PLAYING\n")
                     human_game(self)
             else:
-                print("Computer",self.player+1,"is playing")
+                for i in range(self.no_of_players):
+                    print("Computer ",i+1," points: ",self.points[i])
+                print("\nCOMPUTER",self.player+1,"IS PLAYING\n")
                 computer_game(self)
             '''print("HORIZONTAL LINE MATRIX")
             print(self.hor_line_matrix)
@@ -91,10 +98,35 @@ class PlayGame():
     def display_winner(self):
         max_value = max(self.points)
         max_index = self.points.index(max_value)
+        print("--------------------------------------")
+        for i in range(0,(self.no_of_dots*2)-1):
+                if i%2==0:
+                  for j in range(0,(self.no_of_dots*2)-1):  
+                        if j%2==1:
+                            p=int(i/2)
+                            q=int((j-1)/2)
+                            if self.hor_line_matrix[p,q]==1:
+                                print('-',end=" ")
+                            else:
+                                print(" ",end=" ")
+                        else: print("x",end=" ")
+                else:
+                    for j in range(0,(self.no_of_dots*2)-1):
+                        if j%2==0:
+                            p=int((i-1)/2)
+                            q=int(j/2)
+                            if self.ver_line_matrix[p,q]==1:
+                                print('|',end=" ")
+                            else:
+                                print(" ",end=" ")
+                        else: print(" ",end=" ")
+                print()
+        print("--------------------------------------")
         if self.game_type==2 and max_index==self.no_of_players-1:
             print("WINNER: COMPUTER of points ",max_value)
         else:
             print("WINNER: PLAYER ",max_index+1," of points ",max_value)
+        
 
  
     def Count_points(self,r0,c0,type):
